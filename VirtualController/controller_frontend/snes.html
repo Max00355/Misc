@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %} SNES Controller {% endblock %}
+{% block body %}
+    <style type="text/css">
+        .button { 
+            height: 3em; 
+            width: 5em; 
+            background-color: lightgray;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+        .button-long {
+            width: 7em;
+            height: 2em;
+            background-color: lightgray;
+            
+        }
+
+
+        #l {
+            position: absolute;
+            left: 5.5em;
+            top: 1em;  
+        }
+
+        #r {
+            position: absolute;
+            right: 4.5em;
+            top: 1em;
+        }
+
+        .dpad {
+            position: absolute;
+            left:1em;
+            top:5em;
+        }
+
+        .buttons {
+            position:absolute;
+            right:0;
+            top:5em;
+        }
+    </style>
+    <div class="dpad">
+        <table>
+            <tr>
+                <td></td>
+                <td class="button" id="up">
+                </td>
+            </tr>
+            <tr>
+                <td class="button" id="left">
+                </td>
+                <td></td>
+                <td class="button" id="right">   
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="button" id="down">
+                </td>
+                <td></td>
+            </tr>    
+        </table>
+    </div>
+    <div class="buttons">
+        <table>
+            <tr>
+                <td></td>
+                <td class="button" id="y"></td>
+            </tr>
+            <tr>
+                <td class="button" id="b"></td>
+                <td></td>
+                <td class="button" id="x"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="button" id="a"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="bumpers">
+        <div class="button-long" id="l">
+        </div>
+        <div class="button-long" id="r">
+        </div>
+    </div>
+    <script type="text/javascript">
+        setupKey("t", "#up", "/snes/");
+        setupKey("g", "#left", "/snes/")
+        setupKey("f", "#down", "/snes/")
+        setupKey("h", "#right", "/snes/")
+        setupKey("a", "#a", "/snes/")   
+        setupKey("b", "#b", "/snes/")
+        setupKey("x", "#x", "/snes/")
+        setupKey("y", "#y", "/snes/")
+        setupKey("r", "#r", "/snes/")
+        setupKey("l", "#l", "/snes/")
+    </script>
+{% endblock %}
