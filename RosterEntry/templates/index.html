@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>Roster Entry Form</title>
+        <h1>Roster Entry Page</h1>
+		<script src="../../static/jquery.js"></script>
+    </head>
+    <body>
+        <div class="form">
+            <div class="form-row">
+                Enter your name: <input type="text" id="your-name"> Enter your email: <input type="text" id="your-email">
+            </div>
+
+            <div class="form-row">
+                <select name="team-name" id="team-select-dropdown"> 
+                    <option>Select Team</option>
+                    <option value="njit-men">NJIT Men</option>
+                    <option value="njit-women">NJIT Women</option>
+                </select>
+            </div>
+* If school name does not appear please email alonso@njit.edu
+            <div class="form-row" id="hidden-until-conditions-met" style="display:none;">
+                <div class="athletes">
+                    <input type="text" placeholder="Last Name" name="lastname">
+                    <input type="text" placeholder="First Name" name="firstname">
+                    <input type="text" placeholder="Class" name="class">
+                    <input type="text" placeholder="TFRRS ID" name="id">
+                </div>
+            </div>
+            <div class="form-row">
+                <input type="button" value="+" onClick="add()"> <!--<input type="button" value="-" onClick="sub()">-->
+            </div>
+            <div class="form-row">
+                <input type="button" value="Submit" onClick="submit()">
+            </div>
+        </div>
+        <script type="text/javascript">
+            var to_add = '<div class="athletes"><input type="text" placeholder="Last Name" name="lastname"><input type="text" placeholder="First Name" name="firstname"><input type="text" placeholder="Class" name="class"><input type="text" placeholder="TFRRS ID" name="id"></div>';
+
+            function add() {
+                var location = $("#hidden-until-conditions-met");
+                location.html(location.html() + to_add);
+            }
+            
+            
+
+            function submit() {
+                var school = $("#team-select-dropdown").val();
+                var gender = school.toLowerCase().indexOf("women") == -1 ? "M" : "W";
+                var text_file = [];
+                $(".athletes").each(function(index, element) {
+                    var nodes = element.childNodes;
+                    var text_format = [gender];
+                    for(var x = 0; x < nodes.length; x++) {
+                        if(nodes[x].nodeName == "#text") continue;
+                        if(nodes[x].value == undefined && x != 4)
+                           alert("You must fill out Last Name, First Name and Class") 
+                        if(nodes[x].value) {
+                            text_format.push(nodes[x].value);
+                        }                     
+                    }   
+                    text_file.push(text_format);
+                });
+                var output = "";
+                for (var x = 0; x < text_file.length; x++) {
+                    var on = text_file[x];
+                    output += "I;";
+                    output += on[1] + ";" + on[2];
+                    output += ";;" + gender + ";;" + school.substr(0, school.indexOf("-"));
+                    output += ";;;" + on[3] + ";;;;;;;;;;;;";
+                    output += on[4] +";" + "M\n";
+                }
+                var post = {
+                    "your-name":$("#your-name").val(),
+                    "your-email":$("#your-email").val(),
+                    "team-name":school,
+                    "roster-info":output
+                }
+
+                $.post("/", post);
+                alert("Submitted Successfully!");
+                window.location.reload();
+            }
+
+            setInterval(function() {
+                $("#team-select-dropdown").val() == "Select Team" ? $("#hidden-until-conditions-met").css("display", "none") : $("#hidden-until-conditions-met").css("display", "");
+            },0)
+        </script>
+    </body>
+</html>
